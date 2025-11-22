@@ -75,7 +75,6 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
     print("Combining completed")
     return new_data
 
-
 def Data_Processing(raw_data, newname):
     eol_mark = Detect_EOL(raw_data)
     print("End of line mark has been detected")
@@ -94,11 +93,11 @@ def Data_Processing(raw_data, newname):
 
     return new_data.encode("utf-8")
 
-print("Starting Execution")
+print("Preparing main")
 
 # Main section
 
-print("Preparing main")
+print("Starting Execution")
 
 for oldname, newname in reverter.items():
     print("Old file name is " + oldname)
