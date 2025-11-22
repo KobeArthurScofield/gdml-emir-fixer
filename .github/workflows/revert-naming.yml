@@ -40,7 +40,7 @@ jobs:
           zip -9vr rime-lmdg-dicts.zip ./dicts
 
       - name: Delete existing release and tag
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
