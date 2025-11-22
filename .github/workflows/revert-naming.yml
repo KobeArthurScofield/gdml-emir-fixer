@@ -1,0 +1,87 @@
+name: Rename assets and release
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 23 * * 5"
+  push:
+  pull_request:
+
+jobs:
+  rlr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Retrieve script
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Download upstream
+        run: |
+          curl -L -O -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://github.com/amzxyz/RIME-LMDG/releases/download/dict-nightly/dicts.zip"
+      
+      - name: Unzip file
+        run: |
+          unzip dicts.zip
+          mv dicts extracted
+          mkdir ./processed
+      
+      - name: Kill name fixer
+        run: |
+          python restore-naming.py
+      
+      - name: Repack dictionary
+        run: |
+          mv processed dicts
+          zip -9vr rime-lmdg-dicts.zip ./dicts
+
+      - name: Delete existing release and tag
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const tag = "rrl-weekly";
+            try {
+              const releases = await github.rest.repos.listReleases({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              const existingRelease = releases.data.find(r => r.tag_name === tag);
+              if (existingRelease) {
+                console.log(`Deleting existing Release with ID: ${existingRelease.id}`);
+                await github.rest.repos.deleteRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  release_id: existingRelease.id
+                });
+              }
+              console.log(`Deleting tag: ${tag}`);
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tag}`
+              });
+            } catch (error) {
+              console.log(`No existing release or tag to delete: ${error.message}`);
+            }
+
+      - name: Wait for cleanup
+        run: sleep 30
+
+      - name: Release data
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: rrl-weekly
+          name: "Weekly Update"
+          body: |
+            - `dicts.zip`：经过重命名的最新中文词库文件。
+          files: |
+            dicts.zip
+          draft: false
+          prerelease: false
+          make_latest: true

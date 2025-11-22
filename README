@@ -1,0 +1,5 @@
+Fix problems that caused by upstream changes. 修复上游更改引发的问题。
+
+1. Revert naming conventions from the very beginning reducing readability difficulties. 恢复原有命名规范，减少阅读困难。
+
+For downloading, go to Releases. 下载可直接移步至 Releases。
