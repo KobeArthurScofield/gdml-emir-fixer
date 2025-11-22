@@ -44,7 +44,7 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
             print("The content of the replacement is:\n" + replacement)
 
             decoded_line[lnl] = f"{replacement}"
-            print("Replace line number is " + lnl + "\nThe replaced line is:\n" + decoded_line[lnl])
+            print("Replace line number is " + str(lnl) + "\nThe replaced line is:\n" + decoded_line[lnl])
 
             name_updated = True
 
@@ -60,7 +60,7 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
             print("The content of the replacement is:\n" + replacement)
 
             decoded_line[lnl] = f"{replacement}"
-            print("Replace line number is " + lnl + "\nThe replaced line is:\n" + decoded_line[lnl])
+            print("Replace line number is " + str(lnl) + "\nThe replaced line is:\n" + decoded_line[lnl])
 
             version_updated = True
 
