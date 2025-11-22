@@ -70,6 +70,7 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
 
         continue
 
+    decoded_line.append(eol_mark)
     new_data = eol_mark.join(decoded_line)
     print("Combining completed")
     return new_data
