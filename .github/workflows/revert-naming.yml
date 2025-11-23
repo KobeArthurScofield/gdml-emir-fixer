@@ -48,12 +48,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const tag = ${RLTAG};
             try {
               const releases = await github.rest.repos.listReleases({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              const existingRelease = releases.data.find(r => r.tag_name === ${RLTAG});
+              const existingRelease = releases.data.find(r => r.tag_name === tag);
               if (existingRelease) {
                 console.log(`Deleting existing Release with ID: ${existingRelease.id}`);
                 await github.rest.repos.deleteRelease({
@@ -62,11 +63,11 @@ jobs:
                   release_id: existingRelease.id
                 });
               }
-              console.log(`Deleting tag: ${RLTAG}`);
+              console.log(`Deleting tag: ${tag}`);
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: `tags/${RLTAG}`
+                ref: `tags/${tag}`
               });
             } catch (error) {
               console.log(`No existing release or tag to delete: ${error.message}`);
