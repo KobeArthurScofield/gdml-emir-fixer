@@ -5,6 +5,9 @@ from datetime import date
 
 print("Building functions and objects")
 
+scriptver = "25.327"
+upstreamdate = "2025-11-22"
+
 old_path = "./extracted/"
 new_path = "./processed/"
 
@@ -47,6 +50,7 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
             print("Replace line number is " + str(lnl) + "\nThe replaced line is:\n" + decoded_line[lnl])
 
             name_updated = True
+            continue
 
         if line.startswith("version: ") and not version_updated:
             print("The content of the version line is:\n" + line)
@@ -63,12 +67,11 @@ def Search_And_Replace(decoded_line, newname, eol_mark, datefmt):
             print("Replace line number is " + str(lnl) + "\nThe replaced line is:\n" + decoded_line[lnl])
 
             version_updated = True
+            continue
 
         if name_updated and version_updated:
             print("Name and version update completed")
             break
-
-        continue
 
     decoded_line.append("")
     new_data = eol_mark.join(decoded_line)
@@ -99,6 +102,11 @@ print("Preparing main")
 
 print("Starting Execution")
 
+print("\n")
+print("Converter version: " + scriptver)
+print("Use with upstream release since " + upstreamdate)
+print("\n")
+
 for oldname, newname in reverter.items():
     print("Old file name is " + oldname)
     print("New file name is " + newname)
@@ -119,5 +127,7 @@ for oldname, newname in reverter.items():
     with open(new_file_path, "wb") as wdr:
         wdr.write(new_pool)
         print("New file " + new_file_path + " has been written")
+    
+    print("Converting " + oldname + " to " + newname + " completed.\n")
 
 print("Procedure completed")
