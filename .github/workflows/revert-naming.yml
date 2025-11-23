@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      RLTAG: rrl-weekly
 
     steps:
       - name: Retrieve script
@@ -46,13 +48,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const tag = "rrl-weekly";
             try {
               const releases = await github.rest.repos.listReleases({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              const existingRelease = releases.data.find(r => r.tag_name === tag);
+              const existingRelease = releases.data.find(r => r.tag_name === ${RLTAG});
               if (existingRelease) {
                 console.log(`Deleting existing Release with ID: ${existingRelease.id}`);
                 await github.rest.repos.deleteRelease({
@@ -61,11 +62,11 @@ jobs:
                   release_id: existingRelease.id
                 });
               }
-              console.log(`Deleting tag: ${tag}`);
+              console.log(`Deleting tag: ${RLTAG}`);
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: `tags/${tag}`
+                ref: `tags/${RLTAG}`
               });
             } catch (error) {
               console.log(`No existing release or tag to delete: ${error.message}`);
@@ -78,7 +79,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: rrl-weekly
+          tag_name: ${{ env.RLTAG }}
           name: "Weekly Update"
           body: |
             - `dicts.zip`：经过重命名的最新中文词库文件。
