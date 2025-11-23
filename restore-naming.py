@@ -102,10 +102,10 @@ print("Preparing main")
 
 print("Starting Execution")
 
-print("\n")
+print("")
 print("Converter version: " + scriptver)
 print("Use with upstream release since " + upstreamdate)
-print("\n")
+print("")
 
 for oldname, newname in reverter.items():
     print("Old file name is " + oldname)
