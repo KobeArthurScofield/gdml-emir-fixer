@@ -13,15 +13,15 @@ new_path = "./processed/"
 
 # MAPPING LIST OF THE REVERTING
 reverter = {
-    "cuoyin": "corrections",
-    "diming": "toponymy",
-    "duoyin": "heteronym",
+    "zi": "chars",
     "jichu": "base",
+    "duoyin": "compatible",
     "lianxiang": "suggestion",
-    "renming": "personal_name",
-    "shengwu": "biology",
     "shici": "poetry",
-    "zi": "chars"
+    "diming": "place",
+    "renming": "people",
+    "shengwu": "biology",
+    "cuoyin": "corrections"
 }
 
 def Detect_EOL(rawdata):
