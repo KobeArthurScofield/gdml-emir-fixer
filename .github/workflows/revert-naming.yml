@@ -48,7 +48,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const tag = ${RLTAG};
+            const tag = "${RLTAG}";
             try {
               const releases = await github.rest.repos.listReleases({
                 owner: context.repo.owner,
