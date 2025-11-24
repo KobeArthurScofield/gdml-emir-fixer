@@ -43,49 +43,13 @@ jobs:
           mv processed dicts
           zip -9vr rime-lmdg-dicts.zip ./dicts
 
-      - name: Delete existing release and tag
-        uses: actions/github-script@v8
+      - name: Create release
+        uses: ncipollo/release-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const tag = "${{ env.RLTAG}}";
-            try {
-              const releases = await github.rest.repos.listReleases({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              const existingRelease = releases.data.find(r => r.tag_name === tag);
-              if (existingRelease) {
-                console.log(`Deleting existing Release with ID: ${existingRelease.id}`);
-                await github.rest.repos.deleteRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  release_id: existingRelease.id
-                });
-              }
-              console.log(`Deleting tag: ${tag}`);
-              await github.rest.git.deleteRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `tags/${tag}`
-              });
-            } catch (error) {
-              console.log(`No existing release or tag to delete: ${error.message}`);
-            }
-
-      - name: Wait for cleanup
-        run: sleep 30
-
-      - name: Release data
-        uses: softprops/action-gh-release@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ env.RLTAG }}
-          name: "Weekly Update"
+          artifacts: rime-lmdg-dicts.zip
           body: |
             - `dicts.zip`：经过重命名的最新中文词库文件。
-          files: |
-            rime-lmdg-dicts.zip
-          draft: false
-          prerelease: false
-          make_latest: true
+          makeLatest: true
+          name: "Weekly Update"
+          removeArtifacts: true
+          tag: ${{ env.RLTAG }}
