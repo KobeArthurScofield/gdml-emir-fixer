@@ -51,6 +51,7 @@ jobs:
         with:
           tag_name: ${{ env.RLTAG }}
           name: "Weekly Update"
+          prerelease: false
           body: |
             - `dicts.zip`：经过重命名的最新中文词库文件。
           files: |
