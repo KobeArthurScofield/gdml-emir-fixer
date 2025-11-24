@@ -14,6 +14,7 @@ jobs:
       contents: write
     env:
       RLTAG: rrl-weekly
+      FILEN: rime-lmdg-dicts
 
     steps:
       - name: Retrieve script
@@ -41,15 +42,24 @@ jobs:
       - name: Repack dictionary
         run: |
           mv processed dicts
-          zip -9vr rime-lmdg-dicts.zip ./dicts
+          zip -9vr ./${FILEN}.zip ./dicts
 
       - name: Create release
-        uses: ncipollo/release-action@v1
+        uses: GongT/actions-recreate-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          artifacts: rime-lmdg-dicts.zip
+          tag_name: ${{ env.RLTAG }}
+          release_name: "Weekly Update"
+          artifacts: 
           body: |
             - `dicts.zip`：经过重命名的最新中文词库文件。
-          makeLatest: true
-          name: "Weekly Update"
-          removeArtifacts: true
+
+      - name: Upload dictionary to release
+        uses: svenstaro/upload-release-action@v2
+        if: github.event_name == 'release'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./${{ env.FILEN }}.zip
           tag: ${{ env.RLTAG }}
+          file_glob: true
