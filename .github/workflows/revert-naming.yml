@@ -45,20 +45,13 @@ jobs:
           zip -9vr ./${FILEN}.zip ./dicts
 
       - name: Create release
-        uses: viperproject/create-nightly-release@v1
+        uses: andelf/nightly-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.RLTAG }}
-          release_name: "Weekly Update"
-          artifacts: 
+          name: "Weekly Update"
           body: |
             - `dicts.zip`：经过重命名的最新中文词库文件。
-
-      - name: Upload dictionary to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./${{ env.FILEN }}.zip
-          tag: ${{ env.RLTAG }}
-          file_glob: true
+          files: |
+            ./${{ env.FILEN }}.zip
