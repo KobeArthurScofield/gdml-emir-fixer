@@ -45,7 +45,7 @@ jobs:
           zip -9vr ./${FILEN}.zip ./dicts
 
       - name: Create release
-        uses: GongT/actions-recreate-release@v1
+        uses: viperproject/create-nightly-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
