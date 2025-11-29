@@ -5,8 +5,8 @@ from datetime import date
 
 print("Building functions and objects")
 
-scriptver = "25.327"
-upstreamdate = "2025-11-22"
+scriptver = "25.333"
+upstreamdate = "2025-11-28"
 
 old_path = "./extracted/"
 new_path = "./processed/"
@@ -18,9 +18,12 @@ reverter = {
     "duoyin": "compatible",
     "lianxiang": "suggestion",
     "shici": "poetry",
+    "dikuang": "geography_mineral",
     "diming": "place",
     "renming": "people",
-    "shengwu": "biology",
+    "shuxue": "mathematical",
+    "wu-hua-sheng-yi-yao": "industry_medical",
+    "wuzhong": "biotaxonomy", # Buggy list
     "cuoyin": "corrections"
 }
 
