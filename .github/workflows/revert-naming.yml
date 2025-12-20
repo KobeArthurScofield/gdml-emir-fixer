@@ -13,7 +13,9 @@ jobs:
     permissions:
       contents: write
     env:
-      RLTAG: rrl-weekly
+      # BLACKEDOUT due to immutable problem
+      # RLTAG: rrl-weekly
+      RLTAG: dcrl-weekly
       FILEN: rime-lmdg-dicts
 
     steps:
@@ -56,3 +58,4 @@ jobs:
             - `dicts.zip`：经过重命名的最新中文词库文件。
           files: |
             ./${{ env.FILEN }}.zip
+
